@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
 
 Future<void> _configureMacosWindowUtils() async {
@@ -68,51 +69,53 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
       ),
-      child: MacosScaffold(
-        toolBar: ToolBar(
-          title: Text(widget.title),
-          titleWidth: widget.title.length * 16.0,
-          enableBlur: true,
-          leading: GestureDetector(
-            onTap: () => MacosWindowScope.of(context).toggleSidebar(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0),
-              child: MacosIcon(
-                CupertinoIcons.sidebar_left,
-                color: MacosColors.white.withOpacity(0.7),
+      child: Builder(builder: (context) {
+        return MacosScaffold(
+          toolBar: ToolBar(
+            title: Text(widget.title),
+            titleWidth: widget.title.length * 16.0,
+            enableBlur: true,
+            leading: GestureDetector(
+              onTap: () => MacosWindowScope.of(context).toggleSidebar(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                child: MacosIcon(
+                  CupertinoIcons.sidebar_left,
+                  color: MacosColors.white.withOpacity(0.7),
+                ),
               ),
             ),
+            actions: [
+              ToolBarIconButton(
+                label: 'Add',
+                icon: const MacosIcon(CupertinoIcons.add),
+                onPressed: _incrementCounter,
+                showLabel: false,
+              ),
+            ],
           ),
-          actions: [
-            ToolBarIconButton(
-              label: 'Add',
-              icon: const MacosIcon(CupertinoIcons.add),
-              onPressed: _incrementCounter,
-              showLabel: false,
+          children: [
+            ContentArea(
+              builder: (context, scrollController) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text(
+                        'You have pushed the button this many times:',
+                      ),
+                      Text(
+                        '$_counter',
+                        style: MacosTheme.of(context).typography.largeTitle,
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ],
-        ),
-        children: [
-          ContentArea(
-            builder: (context, scrollController) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'You have pushed the button this many times:',
-                    ),
-                    Text(
-                      '$_counter',
-                      style: MacosTheme.of(context).typography.largeTitle,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }
